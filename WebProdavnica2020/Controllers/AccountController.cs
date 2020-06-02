@@ -14,12 +14,15 @@ namespace WebProdavnica2020.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ProdavnicadbContext db;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager, ProdavnicadbContext _db)
         {
 
             _userManager = userManager;
             _signInManager = signInManager;
+            db = _db;
         }
 
         //public IActionResult Index()
@@ -41,11 +44,24 @@ namespace WebProdavnica2020.Controllers
             if (ModelState.IsValid)
             {
 
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Ime = model.Ime, Prezime = model.Prezime, Adresa = model.Adresa };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, 
+                    Ime = model.Ime, Prezime = model.Prezime, Adresa = model.Adresa };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    Kupac k = new Kupac
+                    {
+                        KupacId = user.Id,
+                        Ime = user.Ime,
+                        Prezime = user.Prezime,
+                        Drzava = "Srbija",
+                        Grad = "Beograd",
+                        Adresa = user.Adresa
+                    };
+                    db.Kupci.Add(k);
+                    db.SaveChanges();
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }

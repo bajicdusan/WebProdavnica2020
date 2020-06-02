@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using WebProdavnica2020.Data;
@@ -63,6 +64,12 @@ namespace WebProdavnica2020
                 opcije.SlidingExpiration = true;
             });
 
+            services.AddDbContext<ProdavnicadbContext>(opcije =>
+                opcije.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSession();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +88,8 @@ namespace WebProdavnica2020
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseRouting();
 
