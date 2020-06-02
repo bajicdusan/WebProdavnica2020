@@ -12,15 +12,27 @@ namespace WebProdavnica2020.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ProdavnicadbContext db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ProdavnicadbContext _db)
         {
             _logger = logger;
+            db = _db;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int id = 0)
         {
-            return View();
+            ViewBag.id = id;
+            ViewBag.Kategorije = db.Kategorije.ToList();
+            IEnumerable<Proizvod> listaProizvoda = db.Proizvodi;
+            if (id != 0)
+            {
+                listaProizvoda = listaProizvoda
+                    .Where(p => p.KategorijaId == id);
+            }
+
+            return View(listaProizvoda.ToList());
+
         }
 
         public IActionResult Privacy()
