@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebProdavnica2020.Models;
+using WebProdavnica2020.Servisi;
 
 namespace WebProdavnica2020
 {
@@ -69,6 +70,7 @@ namespace WebProdavnica2020
 
             services.AddSession();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<KorpaServis>();
 
         }
 
