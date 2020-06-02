@@ -1,10 +1,12 @@
 To install you will need those 2 steps
 
 1. Inside Package Manager Console:
-- add migration migrationName
+- add-migration migrationName
 - update-database
 
-2. Run this Sql query below
+2. Open SQL Server Object Explorer (in Visual Studio), 
+go to (local)\MSSQLLocalDb -> Databases ->
+Run this Sql query below
 
 -- Moze i tabela AspNetUsers
 CREATE TABLE Kupac(
