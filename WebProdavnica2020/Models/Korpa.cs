@@ -23,7 +23,10 @@ namespace WebProdavnica2020.Models
 
                 listaStavki.Add(st1);
             }
-
+            else
+            {
+                st1.Kolicina += kolicina;
+            }
         }
 
         public void PromeniStavku(Proizvod p, int kolicina)
